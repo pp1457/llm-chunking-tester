@@ -58,4 +58,6 @@ documents = load_documents()
 
 chunks = split_documents(documents)
 
+print("Hello")
+
 add_to_chroma(chunks)
