@@ -7,6 +7,7 @@ def load_documents():
     pathlib.Path("tmp/output.md").write_bytes(md_text.encode())
     print("📚 Saving markdown to tmp/output.md")
     loader = UnstructuredMarkdownLoader("tmp/output.md")
-    print("📚 Loading documents from PDF")
-    return loader.load()
+    data = loader.load()
+    print("Complete loading")
+    return data
 
