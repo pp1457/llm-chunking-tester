@@ -20,7 +20,7 @@ PROMPT_TEMPLATE = """
 
 def main():
 
-    query_text = input("Query: ")
+    query_text = "上面寫我的 PDF 不支援是什麼東西"
     query_rag(query_text)
 
 def query_rag(query_text: str):
@@ -38,18 +38,19 @@ def query_rag(query_text: str):
     print(results)
 
     context_text = "\n\n---\n\n".join([doc.page_content for doc, _score in results])
-    prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
-    prompt = prompt_template.format(context=context_text, question=query_text)
+    print(context_text)
+    # prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
+    # prompt = prompt_template.format(context=context_text, question=query_text)
   
     # print(prompt)
   
-    model = Ollama(model="gemma2:9b")
-    response_text = model.invoke(prompt)
+    # model = Ollama(model="llama3.1")
+    # response_text = model.invoke(prompt)
   
-    sources = [doc.metadata.get("id", None) for doc, _score in results]
-    formatted_response = f"\n\nResponse:\n {response_text}\nSources:\n {sources}"
-    print(formatted_response)
-    return response_text
+    # sources = [doc.metadata.get("id", None) for doc, _score in results]
+    # formatted_response = f"\n\nResponse:\n {response_text}\nSources:\n {sources}"
+    # print(formatted_response)
+    # return response_text
 
 if __name__ == "__main__":
   main()
