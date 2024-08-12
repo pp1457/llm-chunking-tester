@@ -1,7 +1,7 @@
 from langchain_community.document_loaders.pdf import PyPDFDirectoryLoader
 from langchain.schema.document import Document
 from get_embedding_function import get_embedding_function
-from langchain_community.vectorstores.chroma import Chroma
+from langchain_chroma import Chroma
 from mupdf_loader import load_documents
 from chunkers.recursive_char import split_documents
 
@@ -27,7 +27,6 @@ def add_to_chroma(chunks: list[Document]):
     print(f"👉 Adding new documents: {len(new_chunks)}")
     new_chunks_ids = [chunk.metadata["id"] for chunk in new_chunks]
     db.add_documents(new_chunks, ids=new_chunks_ids)
-    db.persist()
   else:
     print("✅ No new documents to add")
 
@@ -41,14 +40,16 @@ def calculate_chunk_ids(chunks):
     page = chunk.metadata.get("page")
     current_page_id = f"{source}:{page}"
 
-    if (current_page_id == last_page_id):
-      current_chunk_index += 1
-    else:
-      current_chunk_index = 0
+    current_chunk_index += 1
+
+#    if (current_page_id == last_page_id):
+#    else:
+#       current_chunk_index = 0
     
     last_page_id = current_page_id
 
-    chunk_id = f"{current_page_id}:{current_chunk_index}"
+    chunk_id = f"{current_chunk_index}"
+#    chunk_id = f"{current_page_id}:{current_chunk_index}"
 
     chunk.metadata["id"] = chunk_id 
   

@@ -6,5 +6,7 @@ def load_documents():
     md_text = pymupdf4llm.to_markdown("source/frankenstein.pdf")
     pathlib.Path("tmp/output.md").write_bytes(md_text.encode())
     loader = UnstructuredMarkdownLoader("tmp/output.md")
-    return loader.load()
+    data = loader.load()
+    print("Complete loading")
+    return data
 
