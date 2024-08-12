@@ -19,7 +19,7 @@ PROMPT_TEMPLATE = """
 """
 
 def get_embedding_function():
-    embeddings = OllamaEmbeddings(model="shaw/dmeta-embedding-zh")
+    embeddings = OllamaEmbeddings(model="llama3.1")
     return embeddings
 
 def main():
