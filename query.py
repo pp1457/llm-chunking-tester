@@ -12,7 +12,7 @@ PROMPT_TEMPLATE = """
 ---
 {question}
 --- 
-參考以下內容資料來幫助回答上面的問題
+只參考以下內容資料來幫助回答上面的問題，不要使用你的知識，對於每個回答請列出參考資料
 --- 
 {context}
 ---
@@ -20,7 +20,7 @@ PROMPT_TEMPLATE = """
 
 def main():
 
-    query_text = "上面寫我的 PDF 不支援是什麼東西"
+    query_text = input("Query: ")
     query_rag(query_text)
 
 def query_rag(query_text: str):
@@ -34,21 +34,17 @@ def query_rag(query_text: str):
 
     print("\n---\n")
     print("Retrieval Results: ")
-    print("\n---\n")
     print(results)
 
     context_text = "\n\n---\n\n".join([doc.page_content for doc, _score in results])
-    print(context_text)
     prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
     prompt = prompt_template.format(context=context_text, question=query_text)
-  
-    print(prompt)
   
     model = Ollama(model="llama3.1")
     response_text = model.invoke(prompt)
  
     sources = [doc.metadata.get("id", None) for doc, _score in results]
-    formatted_response = f"\n\nResponse:\n {response_text}\nSources:\n {sources}"
+    formatted_response = f"---\n\nResponse:\n {response_text}\nSources:\n {sources}"
     print(formatted_response)
     return response_text
 
