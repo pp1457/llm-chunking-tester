@@ -3,6 +3,7 @@ from langchain.prompts import ChatPromptTemplate
 from langchain_community.vectorstores.chroma import Chroma
 from langchain_community.llms.ollama import Ollama
 from langchain_community.embeddings.ollama import OllamaEmbeddings
+from get_embedding_function import get_embedding_function
 
 CHROMA_PATH = "chroma"
 
@@ -18,13 +19,9 @@ PROMPT_TEMPLATE = """
 ---
 """
 
-def get_embedding_function():
-    embeddings = OllamaEmbeddings(model="llama3.1")
-    return embeddings
-
 def main():
 
-    query_text = input("Query: ")
+    query_text = "上面寫我的 PDF 不支援是什麼東西"
     query_rag(query_text)
 
 def query_rag(query_text: str):
@@ -35,19 +32,21 @@ def query_rag(query_text: str):
     )
   
     results = db.similarity_search_with_score(query_text, k=5)
+    # print(results)
     context_text = "\n\n---\n\n".join([doc.page_content for doc, _score in results])
-    prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
-    prompt = prompt_template.format(context=context_text, question=query_text)
+    print(context_text)
+    # prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
+    # prompt = prompt_template.format(context=context_text, question=query_text)
   
     # print(prompt)
   
-    model = Ollama(model="gemma2:9b")
-    response_text = model.invoke(prompt)
+    # model = Ollama(model="llama3.1")
+    # response_text = model.invoke(prompt)
   
-    sources = [doc.metadata.get("id", None) for doc, _score in results]
-    formatted_response = f"\n\nResponse:\n {response_text}\nSources:\n {sources}"
-    print(formatted_response)
-    return response_text
+    # sources = [doc.metadata.get("id", None) for doc, _score in results]
+    # formatted_response = f"\n\nResponse:\n {response_text}\nSources:\n {sources}"
+    # print(formatted_response)
+    # return response_text
 
 if __name__ == "__main__":
   main()
