@@ -2,8 +2,12 @@ from langchain_community.document_loaders.pdf import PyPDFDirectoryLoader
 from langchain.schema.document import Document
 from get_embedding_function import get_embedding_function
 from langchain_chroma import Chroma
-from mupdf_loader import load_documents
-from chunkers.recursive_char import split_documents
+from mupdf_loader import load_document
+from chunkers.semantic import split_documents
+from dotenv import load_dotenv
+from os import environ
+
+load_dotenv()
 
 CHROMA_PATH = "chroma"
 
@@ -36,7 +40,7 @@ def calculate_chunk_ids(chunks):
 
   for chunk in chunks:
 
-    source = chunk.metadata.get("source")
+    source = environ.get('SOURCE', 'unk')
 
     current_chunk_index += 1
 
@@ -50,7 +54,7 @@ def calculate_chunk_ids(chunks):
   
   return chunks
 
-documents = load_documents()
+documents = load_document(environ.get("SOURCE", "unk"))
 
 chunks = split_documents(documents)
 

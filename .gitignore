@@ -165,3 +165,4 @@ chroma
 tmp/*
 !.gitkeep
 output*
+.DS_Store
