@@ -1,13 +1,13 @@
 import pymupdf4llm
-import pathlib
-from langchain_community.document_loaders import UnstructuredMarkdownLoader
+from langchain_text_splitters import MarkdownHeaderTextSplitter
 
 def load_documents(): 
-    md_text = pymupdf4llm.to_markdown("source/frankenstein.pdf")
-    pathlib.Path("tmp/output.md").write_bytes(md_text.encode())
-    print("📚 Saving markdown to tmp/output.md")
-    loader = UnstructuredMarkdownLoader("tmp/output.md")
-    data = loader.load()
-    print("Complete loading")
-    return data
-
+    md_text = pymupdf4llm.to_markdown("source/data.pdf")
+    loader = MarkdownHeaderTextSplitter(
+        headers_to_split_on=[
+            ("#", "Header 1"),
+            ("##", "Header 2"),
+        ],
+        return_each_line=True
+    )
+    return loader.split_text(md_text)
