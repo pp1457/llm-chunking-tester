@@ -34,7 +34,9 @@ def query_rag(query_text: str):
 
     print("\n---\n")
     print("Retrieval Results: ")
-    print(results)
+    for r in results:
+        print(r[0].page_content)
+        print("\n==================")
 
     context_text = "\n\n---\n\n".join([doc.page_content for doc, _score in results])
     prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)

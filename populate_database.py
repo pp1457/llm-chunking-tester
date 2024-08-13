@@ -32,24 +32,19 @@ def add_to_chroma(chunks: list[Document]):
 
 
 def calculate_chunk_ids(chunks):
-  last_page_id = None
   current_chunk_index = 0
 
   for chunk in chunks:
+
     source = chunk.metadata.get("source")
-    page = chunk.metadata.get("page")
-    current_page_id = f"{source}:{page}"
 
     current_chunk_index += 1
 
 #    if (current_page_id == last_page_id):
 #    else:
 #       current_chunk_index = 0
-    
-    last_page_id = current_page_id
 
-    chunk_id = f"{current_chunk_index}"
-#    chunk_id = f"{current_page_id}:{current_chunk_index}"
+    chunk_id = f"{source}:{current_chunk_index}"
 
     chunk.metadata["id"] = chunk_id 
   
