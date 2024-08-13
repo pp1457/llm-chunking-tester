@@ -12,47 +12,52 @@ load_dotenv()
 CHROMA_PATH = "chroma"
 
 def add_to_chroma(chunks: list[Document]):
-  db = Chroma(
-    persist_directory=CHROMA_PATH, 
-    embedding_function=get_embedding_function()
-  )
-  existing_items = db.get(include=[])
-  existing_ids = set(existing_items["ids"])
-  print(f"Number of existing documents in DB: {len(existing_ids)}")
+    db = Chroma(
+        persist_directory=CHROMA_PATH, 
+        embedding_function=get_embedding_function()
+    )
+    existing_items = db.get(include=[])
+    existing_ids = set(existing_items["ids"])
+    print(f"Number of existing documents in DB: {len(existing_ids)}")
 
-  chunks_with_ids = calculate_chunk_ids(chunks)
+    chunks_with_ids = calculate_chunk_ids(chunks)
 
-  new_chunks = []
-  for chunk in chunks_with_ids:
-    if chunk.metadata["id"] not in existing_ids:
-      new_chunks.append(chunk)
-  
-  if len(new_chunks):
-    print(f"👉 Adding new documents: {len(new_chunks)}")
-    new_chunks_ids = [chunk.metadata["id"] for chunk in new_chunks]
-    db.add_documents(new_chunks, ids=new_chunks_ids)
-  else:
-    print("✅ No new documents to add")
+    new_chunks = []
+    for chunk in chunks_with_ids:
+        if chunk.metadata["id"] not in existing_ids:
+            print("Chunk: ")
+            print(chunk.page_content)
+            new_chunks.append(chunk)
+    
+    if len(new_chunks):
+        print(f"👉 Adding new documents: {len(new_chunks)}")
+        new_chunks_ids = [chunk.metadata["id"] for chunk in new_chunks]
+        db.add_documents(new_chunks, ids=new_chunks_ids)
+    else:
+        print("✅ No new documents to add")
 
 
 def calculate_chunk_ids(chunks):
-  current_chunk_index = 0
+    current_chunk_index = 0
 
-  for chunk in chunks:
+    for chunk in chunks:
 
+<<<<<<< Updated upstream
     source = environ.get('SOURCE', 'unk')
+=======
+        source = chunk.metadata.get("source")
+>>>>>>> Stashed changes
 
-    current_chunk_index += 1
+        current_chunk_index += 1
 
 #    if (current_page_id == last_page_id):
 #    else:
 #       current_chunk_index = 0
 
-    chunk_id = f"{source}:{current_chunk_index}"
-
-    chunk.metadata["id"] = chunk_id 
+        chunk_id = f"{source}:{current_chunk_index}"
+        chunk.metadata["id"] = chunk_id 
   
-  return chunks
+    return chunks
 
 documents = load_document(environ.get("SOURCE", "unk"))
 
