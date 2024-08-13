@@ -41,13 +41,7 @@ def calculate_chunk_ids(chunks):
     current_chunk_index = 0
 
     for chunk in chunks:
-
-<<<<<<< Updated upstream
-    source = environ.get('SOURCE', 'unk')
-=======
-        source = chunk.metadata.get("source")
->>>>>>> Stashed changes
-
+        source = environ.get('SOURCE', 'unk')
         current_chunk_index += 1
 
 #    if (current_page_id == last_page_id):
