@@ -52,8 +52,6 @@ def calculate_chunk_ids(chunks):
 
 documents = load_documents()
 
-print("Loaded Documents")
-
 chunks = split_documents(documents)
 
 print("Documents Splitted")
